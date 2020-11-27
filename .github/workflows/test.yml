@@ -44,6 +44,24 @@ jobs:
           override: true
           target: ${{ matrix.target.rust-target }}
 
+      - name: Cache Cargo registry
+        uses: actions/cache@v1
+        with:
+          path: ~/.cargo/registry
+          key: ${{ matrix.target.id }}-${{ matrix.python }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Cache Cargo bin
+        uses: actions/cache@v1
+        with:
+          path: ~/.cargo/bin
+          key: ${{ matrix.target.id }}-${{ matrix.python }}-cargo-bin-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Cache Cargo build
+        uses: actions/cache@v1
+        with:
+          path: target
+          key: ${{ matrix.target.id }}-${{ matrix.python }}-cargo-build-target-${{ hashFiles('**/Cargo.lock') }}
+
       - name: Set up Python ${{ matrix.python }}
         uses: actions/setup-python@v1
         with:
